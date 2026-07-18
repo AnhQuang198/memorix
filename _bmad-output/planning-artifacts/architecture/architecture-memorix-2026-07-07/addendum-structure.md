@@ -5,7 +5,8 @@
 ## Layout chốt: `cmd/internal/platform` khung + by-module + hexagonal cho lõi
 
 ```
-memorix/
+memorix/                     # monorepo: backend/ (Go) + web/ (React) + planning dirs
+  backend/                   # toàn bộ Go code gộp ở đây
   cmd/
     api/main.go              # Gin server; Wire ráp adapter→port
     worker/main.go           # River jobs (reconcile, forecast, purge)

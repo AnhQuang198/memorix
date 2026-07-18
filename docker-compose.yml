@@ -14,7 +14,7 @@ services:
     image: redis:8
     ports: ["6379:6379"]
   api:
-    build: .
+    build: ./backend
     environment:
       APP_ENV: development
       HTTP_PORT: "8080"
@@ -24,7 +24,7 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
   worker:
-    build: .
+    build: ./backend
     entrypoint: ["/worker"]
     environment:
       APP_ENV: development
