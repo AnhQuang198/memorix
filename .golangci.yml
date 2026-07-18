@@ -1,0 +1,21 @@
+version: "2"
+linters:
+  enable:
+    - govet
+    - staticcheck
+    - errcheck
+    - ineffassign
+    - depguard
+  settings:
+    depguard:
+      rules:
+        domain-pure:
+          files:
+            - "**/domain/**"
+          deny:
+            - pkg: "github.com/gin-gonic/gin"
+              desc: "domain phải độc lập framework (AD-2)"
+            - pkg: "github.com/jackc/pgx/v5"
+              desc: "domain không import hạ tầng DB (AD-2)"
+            - pkg: "net/http"
+              desc: "domain không biết HTTP (AD-2)"
