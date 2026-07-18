@@ -1,0 +1,11 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE EXTENSION IF NOT EXISTS citext;
+CREATE EXTENSION IF NOT EXISTS unaccent;
+
+CREATE SCHEMA IF NOT EXISTS identity;
+CREATE SCHEMA IF NOT EXISTS vocabulary;
+CREATE SCHEMA IF NOT EXISTS scheduling;
+CREATE SCHEMA IF NOT EXISTS review;
+CREATE SCHEMA IF NOT EXISTS progress;
+CREATE SCHEMA IF NOT EXISTS notification;
+-- Không tạo bảng nghiệp vụ ở đây; bảng tạo theo nhu cầu từng story (AD-10).
