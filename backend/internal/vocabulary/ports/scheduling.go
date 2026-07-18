@@ -23,3 +23,6 @@ type CardService interface {
 	EntryIDsByStatus(ctx context.Context, ownerID uuid.UUID, status string) ([]uuid.UUID, error)
 	BulkCreateForDeck(ctx context.Context, ownerID uuid.UUID, entryIDs []uuid.UUID) (int, error)
 }
+
+// CreateCancelHelper là alias của CreateCardsInput (tiện cho test bắt input).
+type CreateCancelHelper = CreateCardsInput
