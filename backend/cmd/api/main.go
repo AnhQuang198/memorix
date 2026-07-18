@@ -15,14 +15,31 @@ import (
 	"github.com/memorix/memorix/internal/platform/config"
 	"github.com/memorix/memorix/internal/platform/eventbus"
 	"github.com/memorix/memorix/internal/platform/httpx"
+	"github.com/memorix/memorix/internal/platform/jobs"
 	"github.com/memorix/memorix/internal/platform/logger"
 	"github.com/memorix/memorix/internal/platform/ratelimit"
 	"github.com/memorix/memorix/internal/platform/security"
+	schedrepo "github.com/memorix/memorix/internal/scheduling/repo"
+	schedsvc "github.com/memorix/memorix/internal/scheduling/service"
+	vocabhandler "github.com/memorix/memorix/internal/vocabulary/handler"
+	vocabjobs "github.com/memorix/memorix/internal/vocabulary/jobs"
+	vocabports "github.com/memorix/memorix/internal/vocabulary/ports"
+	vocabrepo "github.com/memorix/memorix/internal/vocabulary/repo"
+	vocabsvc "github.com/memorix/memorix/internal/vocabulary/service"
 )
 
 type sysClock struct{}
 
 func (sysClock) Now() time.Time { return time.Now() }
+
+// schedCardAdapter khớp scheduling.Service với vocabulary/ports.CardService.
+// CreateCardsForEntry cần convert DTO (2 struct đồng shape, khác package);
+// 3 method còn lại đồng signature nên được promote từ embedded Service (AD-9).
+type schedCardAdapter struct{ *schedsvc.Service }
+
+func (a schedCardAdapter) CreateCardsForEntry(ctx context.Context, in vocabports.CreateCardsInput) error {
+	return a.Service.CreateCardsForEntry(ctx, schedsvc.CreateCardsInput(in))
+}
 
 func main() {
 	log := logger.New(os.Stdout, "info")
@@ -63,6 +80,31 @@ func main() {
 	// Bỏ qua ở bootstrap tối thiểu nếu chưa cấu hình provider.
 
 	_ = service.NewPort(repos.Users) // IdentityPort — module khác consume ở sprint sau
+
+	// --- Vocabulary (Sprint 2) ---
+	// River insert-only ở API; đảm bảo schema River tồn tại trước khi tạo client.
+	if err := jobs.Migrate(ctx, pool); err != nil {
+		log.Error("river migrate failed", "err", err)
+		os.Exit(1)
+	}
+	riverClient, err := jobs.NewClient(pool, nil)
+	if err != nil {
+		log.Error("river client failed", "err", err)
+		os.Exit(1)
+	}
+
+	cards := schedCardAdapter{schedsvc.New(schedrepo.New(pool))}
+	var _ vocabports.CardService = cards // compile-time: adapter thỏa port
+	vRepo := vocabrepo.New(pool)
+	enqueuer := &vocabjobs.Enqueuer{Client: riverClient}
+	vService := vocabsvc.New(vRepo, vRepo, cards, enqueuer)
+	vHandler := vocabhandler.New(vService)
+
+	// Route vocabulary cần principal → group riêng guard bằng RequireAuth (Sprint 1).
+	// Tách khỏi group identity (login/register public) dù cùng prefix /api/v1.
+	secured := r.Group("/api/v1")
+	secured.Use(authmw.RequireAuth(jwt))
+	vocabhandler.RegisterRoutes(secured, vHandler)
 
 	log.Info("api starting", "port", cfg.HTTPPort, "env", cfg.AppEnv)
 	if err := http.ListenAndServe(":"+cfg.HTTPPort, r); err != nil {
