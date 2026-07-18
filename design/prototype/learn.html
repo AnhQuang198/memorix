@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="vi"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorix · Học thẻ mới</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#e9e9ee;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1c1c22;-webkit-font-smoothing:antialiased}
+  .scr{scrollbar-width:none}.scr::-webkit-scrollbar{display:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* prototype chrome */
+  .pbar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:14px;
+    padding:10px 16px;background:rgba(20,20,26,.92);backdrop-filter:blur(10px);color:#fff;overflow-x:auto;white-space:nowrap}
+  .pbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:1.5px;font-size:12px;flex:none}
+  .pbar .brand i{width:22px;height:22px;border-radius:7px;background:#5b5bd6;display:grid;place-items:center;font-style:normal;font-size:13px}
+  .pbar nav{display:flex;gap:4px;flex:1}
+  .pbar a{color:#c9c9d4;text-decoration:none;font-size:12.5px;padding:6px 11px;border-radius:8px}
+  .pbar a:hover{background:rgba(255,255,255,.08);color:#fff}
+  .pbar a.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .pbar .sep{width:1px;height:18px;background:rgba(255,255,255,.18);flex:none;margin:0 2px}
+  .pbar .grp{font-size:10px;letter-spacing:1.5px;color:#7a7a86;flex:none;padding:0 4px}
+  .canvas{min-height:calc(100vh - 44px);display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:center;padding:44px 24px 80px}
+  .states{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:9998;display:flex;gap:6px;
+    background:rgba(20,20,26,.92);padding:6px;border-radius:14px;backdrop-filter:blur(10px)}
+  .states button{border:none;background:transparent;color:#c9c9d4;font-size:12px;padding:7px 13px;border-radius:9px;cursor:pointer;font-family:inherit}
+  .states button.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .wide{width:100%;max-width:1180px;margin:0 auto;padding:20px}
+  [data-clk]{cursor:pointer}
+</style>
+</head><body>
+<div class="pbar"><span class="brand"><i>M</i>MEMORIX · PROTOTYPE</span><nav><span class="grp">APP</span><a href="home.html" class="">Trang chủ</a><a href="review.html" class="">Ôn tập</a><a href="learn.html" class="on">Học thẻ mới</a><a href="library.html" class="">Thư viện</a><a href="detail.html" class="">Chi tiết từ</a><a href="add.html" class="">Thêm / sửa</a><a href="decks.html" class="">Bộ thẻ</a><a href="stats.html" class="">Thống kê</a><a href="settings.html" class="">Cài đặt</a><a href="tokens.html" class="">Design tokens</a><span class="sep"></span><span class="grp">AUTH</span><a href="welcome.html" class="">Chào mừng</a><a href="login.html" class="">Đăng nhập</a><a href="signup.html" class="">Đăng ký</a><a href="verify.html" class="">Xác thực email</a><a href="forgot.html" class="">Quên mật khẩu</a><a href="reset.html" class="">Đặt lại MK</a><a href="onboarding.html" class="">Onboarding</a></nav></div>
+<main class="canvas">
+<div class="rv-state" data-st="main" style="display:flex;gap:40px"><div style="width:322px;flex:none;background:#0e0e12;border-radius:42px;padding:9px;box-shadow:0 24px 60px -20px rgba(30,27,75,.4);">
+          <div class="scr" style="background:#f6f6f7;border-radius:33px;overflow:hidden;height:652px;display:flex;flex-direction:column;position:relative;color:#1c1c22;">
+            <div style="height:4px;background:#e6e6ea;flex:none;"><div style="width:12%;height:100%;background:#3b7fd6;"></div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px 6px;flex:none;">
+              <span style="font-size:12px;font-weight:600;color:#2c66b0;background:#eaf1fb;padding:4px 10px;border-radius:6px;">Thẻ mới</span>
+              <span style="font-size:15px;font-weight:600;color:#6b6b76;">1 / 8</span>
+              <div style="width:40px;"></div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:14px;">
+              <div style="font-size:26px;font-weight:600;letter-spacing:-.5px;line-height:1.15;">come to terms with</div>
+              <div style="font-size:16px;font-family:ui-monospace,Menlo,monospace;color:#6b6b76;">/kʌm tə ˈtɜːmz wɪð/</div>
+              <div style="font-size:16px;color:#1c1c22;text-align:center;max-width:230px;line-height:1.5;">to gradually accept a difficult or sad situation</div>
+            </div>
+            <!-- onboarding coach layer -->
+            <div style="margin:0 16px;background:#1c1c22;color:#fff;border-radius:16px;padding:16px 18px;">
+              <div style="font-size:14px;font-weight:600;margin-bottom:6px;">Chấm mức độ bạn nhớ</div>
+              <div style="font-size:13px;line-height:1.5;color:#c8c8d0;">Chọn <b style="color:#fff;">Lại</b> nếu quên, <b style="color:#fff;">Dễ</b> nếu quá dễ. Khoảng lặp tiếp theo hiện ngay dưới mỗi nút — cứ thành thật.</div>
+            </div>
+            <div style="padding:12px 16px 22px;flex:none;">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">
+                <button style="height:62px;border:1px solid #e6e6ea;border-top:3px solid #d64550;border-radius:14px;background:#fff;font-family:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;"><span style="font-size:14px;font-weight:700;">Lại</span><span style="font-size:11px;color:#6b6b76;">&lt;1m</span></button>
+                <button style="height:62px;border:1px solid #e6e6ea;border-top:3px solid #c98a2b;border-radius:14px;background:#fff;font-family:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;"><span style="font-size:14px;font-weight:700;">Khó</span><span style="font-size:11px;color:#6b6b76;">6m</span></button>
+                <button style="height:62px;border:1px solid #e6e6ea;border-top:3px solid #2e9e6b;border-radius:14px;background:#fff;font-family:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;"><span style="font-size:14px;font-weight:700;">Tốt</span><span style="font-size:11px;color:#6b6b76;">10m</span></button>
+                <button style="height:62px;border:1px solid #e6e6ea;border-top:3px solid #3b7fd6;border-radius:14px;background:#fff;font-family:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;"><span style="font-size:14px;font-weight:700;">Dễ</span><span style="font-size:11px;color:#6b6b76;">4d</span></button>
+              </div>
+            </div>
+          </div>
+        </div></div>
+<div class="rv-state" data-st="load" style="display:none;gap:40px"><div style="width:322px;flex:none;background:#0e0e12;border-radius:42px;padding:9px;box-shadow:0 24px 60px -20px rgba(30,27,75,.4);">
+          <div class="scr" style="background:#f6f6f7;border-radius:33px;overflow:hidden;height:652px;display:flex;flex-direction:column;position:relative;color:#1c1c22;">
+            <div style="height:4px;background:#e6e6ea;flex:none;"></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px 6px;flex:none;"><div style="width:40px;height:14px;border-radius:6px;background:#e6e6ea;"></div><div style="width:44px;height:14px;border-radius:6px;background:#e6e6ea;"></div><div style="width:40px;"></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:16px;">
+              <div style="width:190px;height:34px;border-radius:9px;background:#e6e6ea;"></div>
+              <div style="width:120px;height:16px;border-radius:6px;background:#ececf0;"></div>
+              <div style="width:230px;height:14px;border-radius:6px;background:#ececf0;"></div>
+            </div>
+            <div style="padding:12px 16px 22px;flex:none;"><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;"><div style="height:62px;border-radius:14px;background:#ececf0;"></div><div style="height:62px;border-radius:14px;background:#ececf0;"></div><div style="height:62px;border-radius:14px;background:#ececf0;"></div><div style="height:62px;border-radius:14px;background:#ececf0;"></div></div></div>
+          </div>
+        </div></div>
+</main>
+<div class="states"><button data-go="main" class="on">Học thẻ</button><button data-go="load" class="">Đang tải</button></div>
+<script>document.querySelectorAll('.states button').forEach(function(b){b.addEventListener('click',function(){
+  document.querySelectorAll('.states button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');
+  var id=b.getAttribute('data-go');document.querySelectorAll('.rv-state').forEach(function(el){el.style.display=el.getAttribute('data-st')===id?'flex':'none';});});});</script>
+
+<script>
+(function(){
+  var map = {
+    'Trang chủ':'home.html','Ôn tập':'review.html','Thư viện':'library.html',
+    'Thống kê':'stats.html','Ôn tập ngay':'review.html','Ôn ngay':'review.html'
+  };
+  // wire elements whose trimmed text exactly matches a nav label
+  function wire(){
+    var all = document.querySelectorAll('.canvas *');
+    all.forEach(function(el){
+      if(el.children.length && el.querySelector('*')) {
+        // only leaf-ish: allow small nesting
+      }
+      var t = (el.textContent||'').trim();
+      if(map[t] && t.length < 16){
+        // climb to a tab-cell-ish ancestor (max 3 up) that isn't huge
+        var node = el, hops=0;
+        while(node && hops<3 && node.parentElement && node.parentElement.children.length>2){ node=node.parentElement; hops++; }
+        var target = map[t];
+        el.setAttribute('data-clk','');
+        el.addEventListener('click', function(e){ e.stopPropagation(); location.href=target; });
+      }
+    });
+    // FAB "+" -> add
+    document.querySelectorAll('.canvas *').forEach(function(el){
+      if((el.textContent||'').trim()==='+' && el.children.length===0){
+        el.style.cursor='pointer'; el.addEventListener('click',function(){location.href='add.html';});
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', wire);
+})();
+</script>
+</body></html>

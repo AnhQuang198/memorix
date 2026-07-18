@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="vi"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorix · Cài đặt</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#e9e9ee;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1c1c22;-webkit-font-smoothing:antialiased}
+  .scr{scrollbar-width:none}.scr::-webkit-scrollbar{display:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* prototype chrome */
+  .pbar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:14px;
+    padding:10px 16px;background:rgba(20,20,26,.92);backdrop-filter:blur(10px);color:#fff;overflow-x:auto;white-space:nowrap}
+  .pbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:1.5px;font-size:12px;flex:none}
+  .pbar .brand i{width:22px;height:22px;border-radius:7px;background:#5b5bd6;display:grid;place-items:center;font-style:normal;font-size:13px}
+  .pbar nav{display:flex;gap:4px;flex:1}
+  .pbar a{color:#c9c9d4;text-decoration:none;font-size:12.5px;padding:6px 11px;border-radius:8px}
+  .pbar a:hover{background:rgba(255,255,255,.08);color:#fff}
+  .pbar a.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .pbar .sep{width:1px;height:18px;background:rgba(255,255,255,.18);flex:none;margin:0 2px}
+  .pbar .grp{font-size:10px;letter-spacing:1.5px;color:#7a7a86;flex:none;padding:0 4px}
+  .canvas{min-height:calc(100vh - 44px);display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:center;padding:44px 24px 80px}
+  .states{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:9998;display:flex;gap:6px;
+    background:rgba(20,20,26,.92);padding:6px;border-radius:14px;backdrop-filter:blur(10px)}
+  .states button{border:none;background:transparent;color:#c9c9d4;font-size:12px;padding:7px 13px;border-radius:9px;cursor:pointer;font-family:inherit}
+  .states button.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .wide{width:100%;max-width:1180px;margin:0 auto;padding:20px}
+  [data-clk]{cursor:pointer}
+</style>
+</head><body>
+<div class="pbar"><span class="brand"><i>M</i>MEMORIX · PROTOTYPE</span><nav><span class="grp">APP</span><a href="home.html" class="">Trang chủ</a><a href="review.html" class="">Ôn tập</a><a href="learn.html" class="">Học thẻ mới</a><a href="library.html" class="">Thư viện</a><a href="detail.html" class="">Chi tiết từ</a><a href="add.html" class="">Thêm / sửa</a><a href="decks.html" class="">Bộ thẻ</a><a href="stats.html" class="">Thống kê</a><a href="settings.html" class="on">Cài đặt</a><a href="tokens.html" class="">Design tokens</a><span class="sep"></span><span class="grp">AUTH</span><a href="welcome.html" class="">Chào mừng</a><a href="login.html" class="">Đăng nhập</a><a href="signup.html" class="">Đăng ký</a><a href="verify.html" class="">Xác thực email</a><a href="forgot.html" class="">Quên mật khẩu</a><a href="reset.html" class="">Đặt lại MK</a><a href="onboarding.html" class="">Onboarding</a></nav></div>
+<main class="canvas">
+<div style="width:322px;flex:none;background:#0e0e12;border-radius:42px;padding:9px;box-shadow:0 24px 60px -20px rgba(30,27,75,.4);">
+          <div class="scr" style="background:#f6f6f7;border-radius:33px;overflow:hidden;height:652px;display:flex;flex-direction:column;position:relative;color:#1c1c22;">
+            <div style="padding:14px 18px 8px;flex:none;"><span style="font-size:22px;font-weight:600;">Cài đặt</span></div>
+            <div class="scr" style="flex:1;overflow-y:auto;padding:8px 16px 18px;">
+              <div style="font-size:11px;font-weight:700;color:#9a9aa4;letter-spacing:.5px;padding:6px 4px;">LỊCH HỌC (FSRS)</div>
+              <div style="background:#fff;border:1px solid #e6e6ea;border-radius:14px;padding:16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;font-weight:600;">Tỷ lệ ghi nhớ mong muốn</span><span style="font-size:15px;font-weight:700;color:#5b5bd6;">90%</span></div>
+                <div style="position:relative;height:6px;background:#e6e6ea;border-radius:3px;margin-top:14px;"><div style="width:75%;height:100%;background:#5b5bd6;border-radius:3px;"></div><div style="position:absolute;left:75%;top:50%;transform:translate(-50%,-50%);width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid #5b5bd6;box-shadow:0 2px 5px rgba(0,0,0,.15);"></div></div>
+                <div style="display:flex;justify-content:space-between;font-size:11px;color:#9a9aa4;margin-top:8px;"><span>80% · ít ôn hơn</span><span>97% · nhớ chắc hơn</span></div>
+              </div>
+              <div style="background:#fff;border:1px solid #e6e6ea;border-radius:14px;padding:14px 16px;margin-top:10px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;">Thẻ mới mỗi ngày</span><span style="font-size:14px;font-weight:600;">20</span></div>
+                <div style="height:1px;background:#f2f2f4;margin:12px 0;"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;">Giới hạn ôn tập</span><span style="font-size:14px;font-weight:600;">200</span></div>
+                <div style="display:flex;gap:6px;margin-top:12px;"><span style="font-size:11.5px;padding:5px 10px;border-radius:14px;background:#eeeefb;color:#5b5bd6;font-weight:600;">Nhẹ nhàng</span><span style="font-size:11.5px;padding:5px 10px;border-radius:14px;background:#5b5bd6;color:#fff;font-weight:600;">Cân bằng</span><span style="font-size:11.5px;padding:5px 10px;border-radius:14px;background:#f2f2f4;color:#6b6b76;">Chuyên sâu</span></div>
+              </div>
+              <div style="font-size:11px;font-weight:700;color:#9a9aa4;letter-spacing:.5px;padding:14px 4px 6px;">GIAO DIỆN</div>
+              <div style="background:#fff;border:1px solid #e6e6ea;border-radius:14px;padding:14px 16px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;">Chủ đề</span><div style="display:flex;gap:4px;background:#f2f2f4;border-radius:9px;padding:3px;"><span style="font-size:12px;padding:5px 11px;border-radius:7px;background:#fff;font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.06);">Sáng</span><span style="font-size:12px;padding:5px 11px;color:#6b6b76;">Tối</span><span style="font-size:12px;padding:5px 11px;color:#6b6b76;">Hệ thống</span></div></div>
+                <div style="height:1px;background:#f2f2f4;margin:12px 0;"></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:14px;">Múi giờ</span><span style="font-size:14px;color:#6b6b76;">GMT+7 · Hà Nội</span></div>
+              </div>
+              <div style="font-size:11px;font-weight:700;color:#9a9aa4;letter-spacing:.5px;padding:14px 4px 6px;">DỮ LIỆU &amp; TÀI KHOẢN</div>
+              <div style="background:#fff;border:1px solid #e6e6ea;border-radius:14px;overflow:hidden;">
+                <div style="padding:13px 16px;font-size:14px;border-bottom:1px solid #f2f2f4;display:flex;justify-content:space-between;">Nhập / Xuất (CSV, Anki) <span style="color:#c4c4cc;">›</span></div>
+                <div style="padding:13px 16px;font-size:14px;border-bottom:1px solid #f2f2f4;display:flex;justify-content:space-between;">Gói &amp; thanh toán <span style="color:#c4c4cc;">›</span></div>
+                <div style="padding:13px 16px;font-size:14px;display:flex;justify-content:space-between;">Quyền riêng tư &amp; GDPR <span style="color:#c4c4cc;">›</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+</main>
+
+
+<script>
+(function(){
+  var map = {
+    'Trang chủ':'home.html','Ôn tập':'review.html','Thư viện':'library.html',
+    'Thống kê':'stats.html','Ôn tập ngay':'review.html','Ôn ngay':'review.html'
+  };
+  // wire elements whose trimmed text exactly matches a nav label
+  function wire(){
+    var all = document.querySelectorAll('.canvas *');
+    all.forEach(function(el){
+      if(el.children.length && el.querySelector('*')) {
+        // only leaf-ish: allow small nesting
+      }
+      var t = (el.textContent||'').trim();
+      if(map[t] && t.length < 16){
+        // climb to a tab-cell-ish ancestor (max 3 up) that isn't huge
+        var node = el, hops=0;
+        while(node && hops<3 && node.parentElement && node.parentElement.children.length>2){ node=node.parentElement; hops++; }
+        var target = map[t];
+        el.setAttribute('data-clk','');
+        el.addEventListener('click', function(e){ e.stopPropagation(); location.href=target; });
+      }
+    });
+    // FAB "+" -> add
+    document.querySelectorAll('.canvas *').forEach(function(el){
+      if((el.textContent||'').trim()==='+' && el.children.length===0){
+        el.style.cursor='pointer'; el.addEventListener('click',function(){location.href='add.html';});
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', wire);
+})();
+</script>
+</body></html>

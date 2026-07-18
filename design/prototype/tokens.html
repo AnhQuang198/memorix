@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="vi"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorix · Design tokens</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#e9e9ee;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1c1c22;-webkit-font-smoothing:antialiased}
+  .scr{scrollbar-width:none}.scr::-webkit-scrollbar{display:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* prototype chrome */
+  .pbar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:14px;
+    padding:10px 16px;background:rgba(20,20,26,.92);backdrop-filter:blur(10px);color:#fff;overflow-x:auto;white-space:nowrap}
+  .pbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:1.5px;font-size:12px;flex:none}
+  .pbar .brand i{width:22px;height:22px;border-radius:7px;background:#5b5bd6;display:grid;place-items:center;font-style:normal;font-size:13px}
+  .pbar nav{display:flex;gap:4px;flex:1}
+  .pbar a{color:#c9c9d4;text-decoration:none;font-size:12.5px;padding:6px 11px;border-radius:8px}
+  .pbar a:hover{background:rgba(255,255,255,.08);color:#fff}
+  .pbar a.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .pbar .sep{width:1px;height:18px;background:rgba(255,255,255,.18);flex:none;margin:0 2px}
+  .pbar .grp{font-size:10px;letter-spacing:1.5px;color:#7a7a86;flex:none;padding:0 4px}
+  .canvas{min-height:calc(100vh - 44px);display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:center;padding:44px 24px 80px}
+  .states{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:9998;display:flex;gap:6px;
+    background:rgba(20,20,26,.92);padding:6px;border-radius:14px;backdrop-filter:blur(10px)}
+  .states button{border:none;background:transparent;color:#c9c9d4;font-size:12px;padding:7px 13px;border-radius:9px;cursor:pointer;font-family:inherit}
+  .states button.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .wide{width:100%;max-width:1180px;margin:0 auto;padding:20px}
+  [data-clk]{cursor:pointer}
+</style>
+</head><body>
+<div class="pbar"><span class="brand"><i>M</i>MEMORIX · PROTOTYPE</span><nav><span class="grp">APP</span><a href="home.html" class="">Trang chủ</a><a href="review.html" class="">Ôn tập</a><a href="learn.html" class="">Học thẻ mới</a><a href="library.html" class="">Thư viện</a><a href="detail.html" class="">Chi tiết từ</a><a href="add.html" class="">Thêm / sửa</a><a href="decks.html" class="">Bộ thẻ</a><a href="stats.html" class="">Thống kê</a><a href="settings.html" class="">Cài đặt</a><a href="tokens.html" class="on">Design tokens</a><span class="sep"></span><span class="grp">AUTH</span><a href="welcome.html" class="">Chào mừng</a><a href="login.html" class="">Đăng nhập</a><a href="signup.html" class="">Đăng ký</a><a href="verify.html" class="">Xác thực email</a><a href="forgot.html" class="">Quên mật khẩu</a><a href="reset.html" class="">Đặt lại MK</a><a href="onboarding.html" class="">Onboarding</a></nav></div>
+<main class="canvas">
+<div class="wide">
+  <section style="max-width:1180px;display:flex;flex-direction:column;gap:28px;">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <span style="font-size:12px;font-weight:700;letter-spacing:2px;color:#5b5bd6;">01 · NỀN TẢNG THIẾT KẾ</span>
+      <h2 style="margin:0;font-size:28px;font-weight:600;letter-spacing:-.5px;">Design tokens &amp; primitives</h2>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <!-- Light tokens -->
+      <div style="background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:22px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:16px;">Giao diện Sáng</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#f6f6f7;border:1px solid #e6e6ea;"></div><span style="font-size:10.5px;color:#6b6b76;">Nền<br><span style="font-family:ui-monospace,Menlo,monospace;">#F6F6F7</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#ffffff;border:1px solid #e6e6ea;"></div><span style="font-size:10.5px;color:#6b6b76;">Bề mặt<br><span style="font-family:ui-monospace,Menlo,monospace;">#FFFFFF</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#1c1c22;"></div><span style="font-size:10.5px;color:#6b6b76;">Chữ chính<br><span style="font-family:ui-monospace,Menlo,monospace;">#1C1C22</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#5b5bd6;"></div><span style="font-size:10.5px;color:#6b6b76;">Nhấn<br><span style="font-family:ui-monospace,Menlo,monospace;">#5B5BD6</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#6b6b76;"></div><span style="font-size:10.5px;color:#6b6b76;">Chữ phụ<br><span style="font-family:ui-monospace,Menlo,monospace;">#6B6B76</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#e6e6ea;"></div><span style="font-size:10.5px;color:#6b6b76;">Viền<br><span style="font-family:ui-monospace,Menlo,monospace;">#E6E6EA</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#eeeefb;border:1px solid #e0e0f6;"></div><span style="font-size:10.5px;color:#6b6b76;">Nhấn nhạt<br><span style="font-family:ui-monospace,Menlo,monospace;">#EEEEFB</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#f2f2f4;border:1px solid #e6e6ea;"></div><span style="font-size:10.5px;color:#6b6b76;">Bề mặt 2<br><span style="font-family:ui-monospace,Menlo,monospace;">#F2F2F4</span></span></div>
+        </div>
+      </div>
+      <!-- Dark tokens -->
+      <div style="background:#161619;border:1px solid #2e2e35;border-radius:18px;padding:22px;">
+        <div style="font-size:13px;font-weight:700;margin-bottom:16px;color:#f2f2f5;">Giao diện Tối</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#161619;border:1px solid #2e2e35;"></div><span style="font-size:10.5px;color:#a0a0ab;">Nền<br><span style="font-family:ui-monospace,Menlo,monospace;">#161619</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#1e1e23;border:1px solid #2e2e35;"></div><span style="font-size:10.5px;color:#a0a0ab;">Bề mặt<br><span style="font-family:ui-monospace,Menlo,monospace;">#1E1E23</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#f2f2f5;"></div><span style="font-size:10.5px;color:#a0a0ab;">Chữ chính<br><span style="font-family:ui-monospace,Menlo,monospace;">#F2F2F5</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#8b8bf0;"></div><span style="font-size:10.5px;color:#a0a0ab;">Nhấn<br><span style="font-family:ui-monospace,Menlo,monospace;">#8B8BF0</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#a0a0ab;"></div><span style="font-size:10.5px;color:#a0a0ab;">Chữ phụ<br><span style="font-family:ui-monospace,Menlo,monospace;">#A0A0AB</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#2e2e35;"></div><span style="font-size:10.5px;color:#a0a0ab;">Viền<br><span style="font-family:ui-monospace,Menlo,monospace;">#2E2E35</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#26264a;"></div><span style="font-size:10.5px;color:#a0a0ab;">Nhấn nhạt<br><span style="font-family:ui-monospace,Menlo,monospace;">#26264A</span></span></div>
+          <div style="display:flex;flex-direction:column;gap:6px;"><div style="height:46px;border-radius:10px;background:#26262c;border:1px solid #2e2e35;"></div><span style="font-size:10.5px;color:#a0a0ab;">Bề mặt 2<br><span style="font-family:ui-monospace,Menlo,monospace;">#26262C</span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- semantic: grades + states + type + spacing -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div style="background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:16px;">
+        <div style="font-size:13px;font-weight:700;">Điểm đánh giá (FSRS)</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+          <div style="border:1px solid #e6e6ea;border-top:3px solid #d64550;border-radius:10px;padding:10px 8px;text-align:center;"><div style="font-weight:700;font-size:14px;">Lại</div><div style="font-size:11px;color:#6b6b76;">&lt;1 phút</div><div style="font-size:10px;color:#9a9aa4;margin-top:3px;">phím 1</div></div>
+          <div style="border:1px solid #e6e6ea;border-top:3px solid #c98a2b;border-radius:10px;padding:10px 8px;text-align:center;"><div style="font-weight:700;font-size:14px;">Khó</div><div style="font-size:11px;color:#6b6b76;">10 phút</div><div style="font-size:10px;color:#9a9aa4;margin-top:3px;">phím 2</div></div>
+          <div style="border:1px solid #e6e6ea;border-top:3px solid #2e9e6b;border-radius:10px;padding:10px 8px;text-align:center;"><div style="font-weight:700;font-size:14px;">Tốt</div><div style="font-size:11px;color:#6b6b76;">4 ngày</div><div style="font-size:10px;color:#9a9aa4;margin-top:3px;">phím 3</div></div>
+          <div style="border:1px solid #e6e6ea;border-top:3px solid #3b7fd6;border-radius:10px;padding:10px 8px;text-align:center;"><div style="font-weight:700;font-size:14px;">Dễ</div><div style="font-size:11px;color:#6b6b76;">9 ngày</div><div style="font-size:10px;color:#9a9aa4;margin-top:3px;">phím 4</div></div>
+        </div>
+        <div style="font-size:13px;font-weight:700;margin-top:4px;">Trạng thái thẻ</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;background:#eaf1fb;color:#2c66b0;"><span style="width:7px;height:7px;border-radius:50%;background:#3b7fd6;"></span>Mới</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;background:#f8efdf;color:#9a6a1e;"><span style="width:7px;height:7px;border-radius:50%;background:#c98a2b;"></span>Đang học</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;background:#e6f3ec;color:#1f7a51;"><span style="width:7px;height:7px;border-radius:50%;background:#2e9e6b;"></span>Ôn tập</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:5px 11px;border-radius:20px;background:#eeeef0;color:#6b6b76;"><span style="width:7px;height:7px;border-radius:50%;background:#8a8a94;"></span>Tạm ẩn</span>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px;">
+        <div style="font-size:13px;font-weight:700;">Thang chữ &amp; khoảng cách</div>
+        <div style="display:flex;flex-direction:column;gap:2px;">
+          <div style="font-size:26px;font-weight:600;letter-spacing:-.5px;line-height:1.1;">play a pivotal role in</div>
+          <div style="font-size:15px;font-family:ui-monospace,Menlo,monospace;color:#6b6b76;">/pleɪ ə ˈpɪvətl̩ rəʊl/ · IPA 15px</div>
+          <div style="font-size:17px;color:#1c1c22;margin-top:4px;">Nghĩa · 17px / 1.5</div>
+          <div style="font-size:15px;font-style:italic;color:#6b6b76;">Ví dụ · 15px italic</div>
+          <div style="font-size:13px;color:#9a9aa4;">Chú thích · 13px</div>
+        </div>
+        <div style="height:1px;background:#e6e6ea;"></div>
+        <div style="display:flex;align-items:flex-end;gap:8px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:4px;height:4px;background:#5b5bd6;border-radius:2px;"></div><span style="font-size:10px;color:#9a9aa4;">4</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:8px;height:8px;background:#5b5bd6;border-radius:2px;"></div><span style="font-size:10px;color:#9a9aa4;">8</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:12px;height:12px;background:#5b5bd6;border-radius:2px;"></div><span style="font-size:10px;color:#9a9aa4;">12</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:16px;height:16px;background:#5b5bd6;border-radius:3px;"></div><span style="font-size:10px;color:#9a9aa4;">16</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:24px;height:24px;background:#5b5bd6;border-radius:4px;"></div><span style="font-size:10px;color:#9a9aa4;">24</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:32px;height:32px;background:#5b5bd6;border-radius:5px;"></div><span style="font-size:10px;color:#9a9aa4;">32</span></div>
+          <span style="font-size:11px;color:#6b6b76;margin-left:6px;">Radius 10 / 16 / 22 · Chạm ≥44px</span>
+        </div>
+        <div style="height:1px;background:#e6e6ea;"></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <button style="border:none;background:#5b5bd6;color:#fff;font-weight:600;font-size:14px;padding:11px 20px;border-radius:12px;font-family:inherit;">Nút chính</button>
+          <button style="background:#fff;color:#1c1c22;font-weight:600;font-size:14px;padding:11px 20px;border-radius:12px;border:1px solid #e0e0e6;font-family:inherit;">Nút phụ</button>
+          <span style="font-size:12px;padding:6px 12px;border-radius:20px;background:#f2f2f4;border:1px solid #e6e6ea;color:#6b6b76;">chip lọc</span>
+          <div style="width:44px;height:44px;border-radius:14px;background:#5b5bd6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:400;">+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <div style="max-width:1180px;display:flex;align-items:center;gap:18px;margin-top:16px;">
+    <div style="flex:none;background:#1c1c22;color:#fff;border-radius:14px;padding:12px 18px;"><div style="font-size:11px;font-weight:700;letter-spacing:2px;color:#8b8bf0;">PHẦN A</div><div style="font-size:20px;font-weight:600;letter-spacing:-.3px;margin-top:2px;">Ứng dụng Mobile</div></div>
+    <div style="font-size:14px;color:#5b5b66;max-width:420px;line-height:1.5;">Trải nghiệm chính của Linh — học theo từng đợt ngắn, thao tác bằng ngón cái, tab dưới + FAB.</div>
+    <div style="flex:1;height:1px;background:#d4d4dc;min-width:40px;"></div>
+  </div>
+
+  </div>
+</main>
+
+
+<script>
+(function(){
+  var map = {
+    'Trang chủ':'home.html','Ôn tập':'review.html','Thư viện':'library.html',
+    'Thống kê':'stats.html','Ôn tập ngay':'review.html','Ôn ngay':'review.html'
+  };
+  // wire elements whose trimmed text exactly matches a nav label
+  function wire(){
+    var all = document.querySelectorAll('.canvas *');
+    all.forEach(function(el){
+      if(el.children.length && el.querySelector('*')) {
+        // only leaf-ish: allow small nesting
+      }
+      var t = (el.textContent||'').trim();
+      if(map[t] && t.length < 16){
+        // climb to a tab-cell-ish ancestor (max 3 up) that isn't huge
+        var node = el, hops=0;
+        while(node && hops<3 && node.parentElement && node.parentElement.children.length>2){ node=node.parentElement; hops++; }
+        var target = map[t];
+        el.setAttribute('data-clk','');
+        el.addEventListener('click', function(e){ e.stopPropagation(); location.href=target; });
+      }
+    });
+    // FAB "+" -> add
+    document.querySelectorAll('.canvas *').forEach(function(el){
+      if((el.textContent||'').trim()==='+' && el.children.length===0){
+        el.style.cursor='pointer'; el.addEventListener('click',function(){location.href='add.html';});
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', wire);
+})();
+</script>
+</body></html>

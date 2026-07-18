@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorix · Prototype</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#e9e9ee;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1c1c22;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1180px;margin:0 auto;padding:56px 32px 100px}
+  header{display:flex;flex-direction:column;gap:16px;margin-bottom:48px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand i{width:30px;height:30px;border-radius:9px;background:#5b5bd6;display:grid;place-items:center;color:#fff;font-weight:700;font-size:16px;font-style:normal}
+  .brand span{font-size:13px;font-weight:700;letter-spacing:2.5px;color:#5b5bd6}
+  h1{font-size:38px;font-weight:600;letter-spacing:-1px;max-width:760px}
+  p.lead{font-size:16px;line-height:1.55;color:#5b5b66;max-width:640px}
+  .tags{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px}
+  .tags span{font-size:12.5px;padding:6px 12px;border-radius:20px;background:#fff;border:1px solid #e2e2e8;color:#5b5b66}
+  .tags span.dark{background:#1c1c22;color:#fff;border-color:#1c1c22}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;color:#5b5bd6;margin:40px 0 20px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:34px}
+  .card{display:flex;flex-direction:column;gap:14px}
+  .frame{position:relative;height:380px;border-radius:26px;overflow:hidden;background:#0e0e12;padding:6px;
+    box-shadow:0 20px 48px -18px rgba(30,27,75,.38);transition:transform .18s,box-shadow .18s}
+  .card:hover .frame{transform:translateY(-4px);box-shadow:0 28px 60px -18px rgba(30,27,75,.5)}
+  .frame .clip{width:100%;height:100%;border-radius:22px;overflow:hidden;position:relative;background:#f6f6f7}
+  .frame iframe{width:322px;height:652px;border:0;transform:scale(.62);transform-origin:top left;pointer-events:none}
+  .frame .hit{position:absolute;inset:0;z-index:2}
+  .frame .open{position:absolute;right:10px;bottom:10px;z-index:3;background:rgba(20,20,26,.9);color:#fff;
+    font-size:11px;padding:5px 10px;border-radius:8px;opacity:0;transition:.18s}
+  .card:hover .open{opacity:1}
+  .meta{padding:0 4px}
+  .meta b{font-size:15px;font-weight:600;display:block}
+  .meta small{font-size:12.5px;color:#7a7a86}
+  .web{grid-column:1/-1}
+  .web .frame{height:300px}
+  .web .frame iframe{width:1180px;height:900px;transform:scale(.34)}
+  footer{margin-top:56px;padding-top:24px;border-top:1px solid #dcdce2;color:#7a7a86;font-size:13px;line-height:1.6}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+<div class="wrap">
+  <header>
+    <div class="brand"><i>M</i><span>MEMORIX</span></div>
+    <h1>Prototype — màn hình ứng dụng</h1>
+    <p class="lead">Bấm mỗi màn để mở bản đầy đủ, tương tác được. Điều hướng giữa các trang bằng thanh trên cùng, tab dưới, và các nút chính (Ôn tập ngay, +). Tách từ file thiết kế <b>Memorix.dc.html</b>.</p>
+    <div class="tags">
+      <span>Mobile-first</span><span>Sáng + Tối</span><span>WCAG 2.1 AA</span>
+      <span>UI tiếng Việt · nội dung Anh</span><span class="dark">10 màn / nhiều state</span>
+    </div>
+  </header>
+
+  <div class="eyebrow">XÁC THỰC · ONBOARDING</div>
+  <div class="grid" id="authGrid"></div>
+
+  <div class="eyebrow">MÀN HÌNH MOBILE (APP)</div>
+  <div class="grid" id="mobileGrid"></div>
+
+  <div class="eyebrow">WEB / DASHBOARD</div>
+  <div class="grid" id="webGrid"></div>
+
+  <footer>
+    Nguồn: <b>design/Memorix.html</b> (Design Composer bundle) → tách thành <b>design/prototype/*.html</b>.<br>
+    Section bổ sung trong file gốc chưa tách riêng: bố cục desktop (Home/Review/Master-detail/Settings) và mục Self-review — có thể tách tiếp nếu cần.
+  </footer>
+</div>
+
+<script>
+  var auth = [
+    ['welcome.html','Chào mừng','Splash · CTA đăng ký / đăng nhập'],
+    ['login.html','Đăng nhập','Email + mật khẩu · Google / Apple'],
+    ['signup.html','Đăng ký','Tên/email/mật khẩu · độ mạnh · OAuth'],
+    ['verify.html','Xác thực email','Nhập mã OTP 6 số · gửi lại'],
+    ['forgot.html','Quên mật khẩu','Gửi liên kết đặt lại qua email'],
+    ['reset.html','Đặt mật khẩu mới','Mật khẩu mới + tiêu chí độ mạnh'],
+    ['onboarding.html','Onboarding','Chọn mục tiêu → cá nhân hoá']
+  ];
+  var mobile = [
+    ['home.html','Trang chủ','Due card, North Star, heatmap, forecast'],
+    ['review.html','Ôn tập','Mặt trước/sau · Hoàn thành · Offline'],
+    ['learn.html','Học thẻ mới','Onboarding coach · loading skeleton'],
+    ['library.html','Thư viện','Danh sách + trạng thái rỗng'],
+    ['detail.html','Chi tiết từ','Nghĩa, ví dụ, IPA, thống kê thẻ'],
+    ['add.html','Thêm / sửa','AI-fill gợi ý IPA/nghĩa/ví dụ'],
+    ['decks.html','Bộ thẻ','Deck tuyển chọn theo mục tiêu'],
+    ['settings.html','Cài đặt','Cấu hình lịch, theme, ngôn ngữ']
+  ];
+  var web = [
+    ['stats.html','Thống kê','Heatmap, retention thật vs mong muốn, forecast'],
+    ['tokens.html','Design tokens','Màu, chữ, spacing, primitives']
+  ];
+  function card(row, web){
+    var f=row[0],t=row[1],d=row[2];
+    return '<a class="card'+(web?' ':'')+'" href="'+f+'"><div class="frame"><div class="clip">'+
+      '<iframe src="'+f+'" loading="lazy" title="'+t+'"></iframe></div>'+
+      '<div class="hit"></div><span class="open">Mở →</span></div>'+
+      '<div class="meta"><b>'+t+'</b><small>'+d+'</small></div></a>';
+  }
+  document.getElementById('authGrid').innerHTML = auth.map(function(r){return card(r,false)}).join('');
+  document.getElementById('mobileGrid').innerHTML = mobile.map(function(r){return card(r,false)}).join('');
+  document.getElementById('webGrid').innerHTML = web.map(function(r){return '<div class="web">'+card(r,true)+'</div>'}).join('');
+</script>
+</body></html>

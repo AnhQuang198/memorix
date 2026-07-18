@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="vi"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorix · Chào mừng</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#e9e9ee;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1c1c22;-webkit-font-smoothing:antialiased}
+  .scr{scrollbar-width:none}.scr::-webkit-scrollbar{display:none}
+  input,button{font-family:inherit}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .pbar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:14px;padding:10px 16px;background:rgba(20,20,26,.92);backdrop-filter:blur(10px);color:#fff;overflow-x:auto;white-space:nowrap}
+  .pbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:1.5px;font-size:12px;flex:none}
+  .pbar .brand i{width:22px;height:22px;border-radius:7px;background:#5b5bd6;display:grid;place-items:center;font-style:normal;font-size:13px}
+  .pbar nav{display:flex;gap:4px;flex:1}
+  .pbar a{color:#c9c9d4;text-decoration:none;font-size:12.5px;padding:6px 11px;border-radius:8px}
+  .pbar a:hover{background:rgba(255,255,255,.08);color:#fff}
+  .pbar a.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .pbar .sep{width:1px;height:18px;background:rgba(255,255,255,.18);flex:none;margin:0 2px}
+  .pbar .grp{font-size:10px;letter-spacing:1.5px;color:#7a7a86;flex:none;padding:0 4px}
+  .canvas{min-height:calc(100vh - 44px);display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:center;padding:44px 24px 80px}
+</style>
+</head><body>
+<div class="pbar"><span class="brand"><i>M</i>MEMORIX · PROTOTYPE</span><nav><span class="grp">APP</span><a href="home.html" class="">Trang chủ</a><a href="review.html" class="">Ôn tập</a><a href="learn.html" class="">Học thẻ mới</a><a href="library.html" class="">Thư viện</a><a href="detail.html" class="">Chi tiết từ</a><a href="add.html" class="">Thêm / sửa</a><a href="decks.html" class="">Bộ thẻ</a><a href="stats.html" class="">Thống kê</a><a href="settings.html" class="">Cài đặt</a><a href="tokens.html" class="">Design tokens</a><span class="sep"></span><span class="grp">AUTH</span><a href="welcome.html" class="on">Chào mừng</a><a href="login.html" class="">Đăng nhập</a><a href="signup.html" class="">Đăng ký</a><a href="verify.html" class="">Xác thực email</a><a href="forgot.html" class="">Quên mật khẩu</a><a href="reset.html" class="">Đặt lại MK</a><a href="onboarding.html" class="">Onboarding</a></nav></div>
+<main class="canvas"><div style="width:322px;flex:none;background:#0e0e12;border-radius:42px;padding:9px;box-shadow:0 24px 60px -20px rgba(30,27,75,.4);">
+    <div class="scr" style="background:#fff;border-radius:33px;overflow:hidden;height:652px;display:flex;flex-direction:column;position:relative;color:#1c1c22;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 22px 4px;font-size:13px;font-weight:600;flex:none;"><span>9:41</span><span style="color:#9a9aa4;letter-spacing:1px;">●●●</span></div>
+      
+  <div style="flex:1;display:flex;flex-direction:column;padding:26px 24px 30px;">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;">
+      <div style="width:72px;height:72px;border-radius:22px;background:#5b5bd6;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:36px;box-shadow:0 12px 28px -8px #5b5bd6;">M</div>
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+        <div style="font-size:13px;font-weight:700;letter-spacing:3px;color:#5b5bd6;">MEMORIX</div>
+        <h1 style="font-size:27px;font-weight:600;letter-spacing:-.5px;line-height:1.2;">Ghi nhớ từ vựng<br>đo được, bền lâu</h1>
+        <p style="font-size:14.5px;color:#6b6b76;line-height:1.5;max-width:250px;">Bộ não của Anki, độ tinh tế của Duolingo. Tối đa ghi nhớ, tối thiểu thời gian.</p>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:11px;">
+      <button onclick="location.href='signup.html'" style="width:100%;height:52px;border:none;border-radius:14px;background:#5b5bd6;color:#fff;font-size:16px;font-weight:700;cursor:pointer;">Tạo tài khoản</button>
+      <button onclick="location.href='login.html'" style="width:100%;height:52px;border:1px solid #e2e2e8;border-radius:14px;background:#fff;color:#1c1c22;font-size:16px;font-weight:600;cursor:pointer;">Tôi đã có tài khoản</button>
+      <div style="text-align:center;font-size:12px;color:#9a9aa4;margin-top:4px;">Bằng việc tiếp tục, bạn đồng ý <span style="color:#5b5bd6;">Điều khoản</span> &amp; <span style="color:#5b5bd6;">Bảo mật</span></div>
+    </div>
+  </div>
+    </div>
+  </div></main>
+</body></html>

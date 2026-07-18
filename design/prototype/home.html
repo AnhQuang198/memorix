@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="vi"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memorix · Trang chủ</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#e9e9ee;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#1c1c22;-webkit-font-smoothing:antialiased}
+  .scr{scrollbar-width:none}.scr::-webkit-scrollbar{display:none}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* prototype chrome */
+  .pbar{position:sticky;top:0;z-index:9999;display:flex;align-items:center;gap:14px;
+    padding:10px 16px;background:rgba(20,20,26,.92);backdrop-filter:blur(10px);color:#fff;overflow-x:auto;white-space:nowrap}
+  .pbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;letter-spacing:1.5px;font-size:12px;flex:none}
+  .pbar .brand i{width:22px;height:22px;border-radius:7px;background:#5b5bd6;display:grid;place-items:center;font-style:normal;font-size:13px}
+  .pbar nav{display:flex;gap:4px;flex:1}
+  .pbar a{color:#c9c9d4;text-decoration:none;font-size:12.5px;padding:6px 11px;border-radius:8px}
+  .pbar a:hover{background:rgba(255,255,255,.08);color:#fff}
+  .pbar a.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .pbar .sep{width:1px;height:18px;background:rgba(255,255,255,.18);flex:none;margin:0 2px}
+  .pbar .grp{font-size:10px;letter-spacing:1.5px;color:#7a7a86;flex:none;padding:0 4px}
+  .canvas{min-height:calc(100vh - 44px);display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;justify-content:center;padding:44px 24px 80px}
+  .states{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;z-index:9998;display:flex;gap:6px;
+    background:rgba(20,20,26,.92);padding:6px;border-radius:14px;backdrop-filter:blur(10px)}
+  .states button{border:none;background:transparent;color:#c9c9d4;font-size:12px;padding:7px 13px;border-radius:9px;cursor:pointer;font-family:inherit}
+  .states button.on{background:#5b5bd6;color:#fff;font-weight:600}
+  .wide{width:100%;max-width:1180px;margin:0 auto;padding:20px}
+  [data-clk]{cursor:pointer}
+</style>
+</head><body>
+<div class="pbar"><span class="brand"><i>M</i>MEMORIX · PROTOTYPE</span><nav><span class="grp">APP</span><a href="home.html" class="on">Trang chủ</a><a href="review.html" class="">Ôn tập</a><a href="learn.html" class="">Học thẻ mới</a><a href="library.html" class="">Thư viện</a><a href="detail.html" class="">Chi tiết từ</a><a href="add.html" class="">Thêm / sửa</a><a href="decks.html" class="">Bộ thẻ</a><a href="stats.html" class="">Thống kê</a><a href="settings.html" class="">Cài đặt</a><a href="tokens.html" class="">Design tokens</a><span class="sep"></span><span class="grp">AUTH</span><a href="welcome.html" class="">Chào mừng</a><a href="login.html" class="">Đăng nhập</a><a href="signup.html" class="">Đăng ký</a><a href="verify.html" class="">Xác thực email</a><a href="forgot.html" class="">Quên mật khẩu</a><a href="reset.html" class="">Đặt lại MK</a><a href="onboarding.html" class="">Onboarding</a></nav></div>
+<main class="canvas">
+<div style="width:322px;flex:none;background:#0e0e12;border-radius:42px;padding:9px;box-shadow:0 24px 60px -20px rgba(30,27,75,.4);">
+          <div class="scr" style="background:#f6f6f7;border-radius:33px;overflow:hidden;height:652px;display:flex;flex-direction:column;position:relative;color:#1c1c22;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 22px 4px;font-size:13px;font-weight:600;flex:none;"><span>9:41</span><span style="color:#9a9aa4;letter-spacing:1px;">●●●</span></div>
+            <div class="scr" style="flex:1;overflow-y:auto;padding:12px 20px 90px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div><div style="font-size:14px;color:#6b6b76;">Chào buổi tối,</div><div style="font-size:24px;font-weight:600;letter-spacing:-.4px;">Linh</div></div>
+                <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #e6e6ea;border-radius:20px;padding:6px 12px;"><span style="width:8px;height:8px;border-radius:50%;background:#c98a2b;"></span><span style="font-size:13px;font-weight:600;">12 ngày</span></div>
+              </div>
+              <div style="margin-top:16px;background:#5b5bd6;border-radius:22px;padding:22px;color:#fff;">
+                <div style="font-size:14px;opacity:.85;">Đến hạn hôm nay</div>
+                <div style="font-size:52px;font-weight:600;letter-spacing:-2px;line-height:1;margin:4px 0 2px;">24</div>
+                <div style="font-size:14px;opacity:.85;">thẻ · gồm 8 thẻ mới</div>
+                <button style="width:100%;height:52px;margin-top:16px;border:none;border-radius:14px;background:#fff;color:#5b5bd6;font-size:16px;font-weight:700;font-family:inherit;">Ôn tập ngay</button>
+              </div>
+              <div style="margin-top:14px;background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:18px;">
+                <div style="font-size:13px;color:#6b6b76;">Ngôi sao Bắc Đẩu · tuần này</div>
+                <div style="font-size:24px;font-weight:600;color:#5b5bd6;margin-top:2px;">+45 từ đã ghi nhớ</div>
+                <div style="display:flex;gap:3px;margin-top:14px;">
+                  <div style="flex:1;height:26px;border-radius:5px;background:#eeeefb;"></div><div style="flex:1;height:26px;border-radius:5px;background:#d6d6f6;"></div><div style="flex:1;height:26px;border-radius:5px;background:#5b5bd6;"></div><div style="flex:1;height:26px;border-radius:5px;background:#9a9ae8;"></div><div style="flex:1;height:26px;border-radius:5px;background:#5b5bd6;"></div><div style="flex:1;height:26px;border-radius:5px;background:#c8c8f2;"></div><div style="flex:1;height:26px;border-radius:5px;background:#eeeefb;"></div>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:10px;color:#9a9aa4;margin-top:5px;"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span>T7</span><span>CN</span></div>
+              </div>
+              <div style="margin-top:14px;background:#fff;border:1px solid #e6e6ea;border-radius:18px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;">
+                <div><div style="font-size:13px;color:#6b6b76;">Dự báo ngày mai</div><div style="font-size:18px;font-weight:600;margin-top:2px;">~30 thẻ</div></div>
+                <span style="font-size:12px;color:#9a9aa4;">Tải học đều đặn</span>
+              </div>
+            </div>
+            <!-- FAB -->
+            <div style="position:absolute;right:18px;bottom:80px;width:52px;height:52px;border-radius:18px;background:#5b5bd6;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 20px -6px rgba(91,91,214,.6);">+</div>
+            <!-- tabs -->
+            <div style="height:66px;flex:none;border-top:1px solid #e6e6ea;background:#fff;display:flex;align-items:center;justify-content:space-around;padding:0 6px;position:absolute;bottom:0;left:0;right:0;">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:#5b5bd6;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5b5bd6" stroke-width="1.8"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6h-4v6H5a1 1 0 0 1-1-1z"></path></svg><span style="font-size:10.5px;font-weight:600;">Trang chủ</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:#9a9aa4;position:relative;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a9aa4" stroke-width="1.8"><rect x="4" y="6" width="12" height="14" rx="2"></rect><path d="M8 3h10a2 2 0 0 1 2 2v11"></path></svg><span style="font-size:10.5px;">Ôn tập</span><span style="position:absolute;top:-4px;right:2px;background:#d64550;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;">24</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:#9a9aa4;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a9aa4" stroke-width="1.8"><line x1="5" y1="7" x2="19" y2="7"></line><line x1="5" y1="12" x2="19" y2="12"></line><line x1="5" y1="17" x2="14" y2="17"></line></svg><span style="font-size:10.5px;">Thư viện</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:3px;color:#9a9aa4;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a9aa4" stroke-width="1.8"><line x1="6" y1="20" x2="6" y2="13"></line><line x1="12" y1="20" x2="12" y2="7"></line><line x1="18" y1="20" x2="18" y2="10"></line></svg><span style="font-size:10.5px;">Thống kê</span></div>
+            </div>
+          </div>
+        </div>
+</main>
+
+
+<script>
+(function(){
+  var map = {
+    'Trang chủ':'home.html','Ôn tập':'review.html','Thư viện':'library.html',
+    'Thống kê':'stats.html','Ôn tập ngay':'review.html','Ôn ngay':'review.html'
+  };
+  // wire elements whose trimmed text exactly matches a nav label
+  function wire(){
+    var all = document.querySelectorAll('.canvas *');
+    all.forEach(function(el){
+      if(el.children.length && el.querySelector('*')) {
+        // only leaf-ish: allow small nesting
+      }
+      var t = (el.textContent||'').trim();
+      if(map[t] && t.length < 16){
+        // climb to a tab-cell-ish ancestor (max 3 up) that isn't huge
+        var node = el, hops=0;
+        while(node && hops<3 && node.parentElement && node.parentElement.children.length>2){ node=node.parentElement; hops++; }
+        var target = map[t];
+        el.setAttribute('data-clk','');
+        el.addEventListener('click', function(e){ e.stopPropagation(); location.href=target; });
+      }
+    });
+    // FAB "+" -> add
+    document.querySelectorAll('.canvas *').forEach(function(el){
+      if((el.textContent||'').trim()==='+' && el.children.length===0){
+        el.style.cursor='pointer'; el.addEventListener('click',function(){location.href='add.html';});
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', wire);
+})();
+</script>
+</body></html>
