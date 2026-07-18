@@ -1,0 +1,11 @@
+version: "2"
+sql:
+  - engine: postgresql
+    schema: migrations
+    queries: db/queries/identity
+    gen:
+      go:
+        package: gen
+        out: internal/identity/repo/gen
+        sql_package: pgx/v5
+# Thêm block tương tự cho vocabulary/scheduling/review/progress khi story cần query.
