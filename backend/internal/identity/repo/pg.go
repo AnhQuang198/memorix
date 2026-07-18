@@ -72,7 +72,7 @@ func (r *UserRepo) ByEmail(ctx context.Context, email string) (*domain.User, err
 }
 
 func (r *UserRepo) ByID(ctx context.Context, id string) (*domain.User, error) {
-	row := r.pool.QueryRow(ctx, `SELECT `+userCols+` FROM identity.users WHERE id = $1`, id)
+	row := r.pool.QueryRow(ctx, `SELECT `+userCols+` FROM identity.users WHERE id = $1 AND deleted_at IS NULL`, id)
 	return scanUser(row)
 }
 
