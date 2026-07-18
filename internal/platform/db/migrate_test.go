@@ -24,7 +24,7 @@ func TestMigrate_CreatesSchemas(t *testing.T) {
 	if err != nil {
 		t.Fatalf("start pg: %v", err)
 	}
-	defer pg.Terminate(ctx)
+	defer func() { _ = pg.Terminate(ctx) }()
 
 	dsn, _ := pg.ConnectionString(ctx, "sslmode=disable")
 	if err := Migrate("file://../../../migrations", dsn); err != nil {
@@ -32,7 +32,7 @@ func TestMigrate_CreatesSchemas(t *testing.T) {
 	}
 
 	conn, _ := pgx.Connect(ctx, dsn)
-	defer conn.Close(ctx)
+	defer func() { _ = conn.Close(ctx) }()
 	var count int
 	err = conn.QueryRow(ctx,
 		`SELECT count(*) FROM information_schema.schemata
