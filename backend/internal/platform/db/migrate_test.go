@@ -91,3 +91,45 @@ func TestMigrate_CreatesVocabularyTables(t *testing.T) {
 		t.Errorf("term_normalized = %q, want %q", norm, "resume")
 	}
 }
+
+func TestMigrate_CreatesSchedulingCards(t *testing.T) {
+	if testing.Short() {
+		t.Skip("skip container test in -short mode")
+	}
+	ctx := context.Background()
+	pg, err := postgres.Run(ctx, "postgres:18",
+		postgres.WithDatabase("memorix"),
+		postgres.WithUsername("test"), postgres.WithPassword("test"),
+		testcontainers.WithWaitStrategy(wait.ForListeningPort("5432/tcp").WithStartupTimeout(60*time.Second)),
+	)
+	if err != nil {
+		t.Fatalf("start pg: %v", err)
+	}
+	defer func() { _ = pg.Terminate(ctx) }()
+
+	dsn, _ := pg.ConnectionString(ctx, "sslmode=disable")
+	if err := Migrate("file://../../../migrations", dsn); err != nil {
+		t.Fatalf("migrate: %v", err)
+	}
+	conn, _ := pgx.Connect(ctx, dsn)
+	defer func() { _ = conn.Close(ctx) }()
+
+	owner := "11111111-1111-1111-1111-111111111111"
+	entry := "22222222-2222-2222-2222-222222222222"
+	for i := 0; i < 2; i++ {
+		_, err = conn.Exec(ctx,
+			`INSERT INTO scheduling.cards (owner_id, entry_id, direction) VALUES ($1,$2,'front_back')
+			 ON CONFLICT (owner_id, entry_id, direction) DO NOTHING`, owner, entry)
+		if err != nil {
+			t.Fatalf("insert %d: %v", i, err)
+		}
+	}
+	var n int
+	if err := conn.QueryRow(ctx,
+		`SELECT count(*) FROM scheduling.cards WHERE owner_id=$1 AND entry_id=$2`, owner, entry).Scan(&n); err != nil {
+		t.Fatalf("count: %v", err)
+	}
+	if n != 1 {
+		t.Errorf("idempotent insert produced %d rows, want 1", n)
+	}
+}
