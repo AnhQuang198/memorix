@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/memorix/memorix/internal/identity/handler"
 	"github.com/memorix/memorix/internal/identity/mailer"
@@ -13,13 +14,20 @@ import (
 	"github.com/memorix/memorix/internal/identity/service"
 	"github.com/memorix/memorix/internal/platform/authmw"
 	"github.com/memorix/memorix/internal/platform/config"
+	"github.com/memorix/memorix/internal/platform/db"
 	"github.com/memorix/memorix/internal/platform/eventbus"
 	"github.com/memorix/memorix/internal/platform/httpx"
 	"github.com/memorix/memorix/internal/platform/jobs"
 	"github.com/memorix/memorix/internal/platform/logger"
 	"github.com/memorix/memorix/internal/platform/ratelimit"
 	"github.com/memorix/memorix/internal/platform/security"
+	revhandler "github.com/memorix/memorix/internal/review/handler"
+	revports "github.com/memorix/memorix/internal/review/ports"
+	revrepo "github.com/memorix/memorix/internal/review/repo"
+	revsvc "github.com/memorix/memorix/internal/review/service"
+	schedhandler "github.com/memorix/memorix/internal/scheduling/handler"
 	schedrepo "github.com/memorix/memorix/internal/scheduling/repo"
+	"github.com/memorix/memorix/internal/scheduling/repo/fsrsadapter"
 	schedsvc "github.com/memorix/memorix/internal/scheduling/service"
 	vocabhandler "github.com/memorix/memorix/internal/vocabulary/handler"
 	vocabjobs "github.com/memorix/memorix/internal/vocabulary/jobs"
@@ -105,6 +113,46 @@ func main() {
 	secured := r.Group("/api/v1")
 	secured.Use(authmw.RequireAuth(jwt))
 	vocabhandler.RegisterRoutes(secured, vHandler)
+
+	// --- Sprint 3: scheduling prefs + review (S6 — ráp adapter→port ở cmd) ---
+	// Handler đọc principal nội bộ qua authmw.UserID (Auth Contract Sprint 1); guard
+	// bằng `secured` (RequireAuth) ở trên — KHÔNG truyền ownerFn.
+	cardStore := schedrepo.NewCardStore()
+	prefsStore := schedrepo.NewPrefsStore()
+	sched := fsrsadapter.New()
+
+	prefsSvc := schedsvc.NewPrefsService(pool, prefsStore)
+	schedhandler.RegisterRoutes(secured, schedhandler.New(prefsSvc))
+
+	gradeSvc := revsvc.NewGradeService(revsvc.GradeDeps{
+		Tx:        func(ctx context.Context, fn func(db.Querier) error) error { return db.WithinTx(ctx, pool, fn) },
+		Scheduler: sched, Cards: cardStore, Prefs: prefsStore,
+		Logs: revrepo.NewReviewLogRepo(), Receipts: revrepo.NewReceiptRepo(), Bus: bus, Clock: time.Now,
+	})
+	// vocabContent bọc EntryRepo batch-load (Sprint 2) → review/ports.VocabularyPort;
+	// port định nghĩa ở caller (review) để tránh import cycle (AD-9).
+	vocabContent := revports.VocabularyFunc(func(ctx context.Context, ownerID uuid.UUID, ids []uuid.UUID) (map[uuid.UUID]revports.EntryContent, error) {
+		rows, err := vRepo.BatchReviewContent(ctx, ownerID, ids)
+		if err != nil {
+			return nil, err
+		}
+		out := make(map[uuid.UUID]revports.EntryContent, len(rows))
+		for _, rc := range rows {
+			out[rc.EntryID] = revports.EntryContent{
+				EntryID: rc.EntryID, Term: rc.Term, IPA: rc.IPA, Meaning: rc.Meaning, Example: rc.Example,
+			}
+		}
+		return out, nil
+	})
+	queueSvc := revsvc.NewQueueService(revsvc.QueueDeps{
+		Pool: pool, Cards: cardStore, Prefs: prefsStore, Scheduler: sched, Vocab: vocabContent, Clock: time.Now,
+	})
+	summarySvc := revsvc.NewSummaryService(revsvc.SummaryDeps{
+		Pool: pool, Logs: revrepo.NewReviewLogRepo(), Cards: cardStore, Prefs: prefsStore, Clock: time.Now,
+	})
+	revhandler.NewReviewHandler(gradeSvc, queueSvc, summarySvc).Register(secured)
+	// CardGraded subscriber: progress read model chưa có ở Sprint 3 backend → hoãn
+	// (event vẫn phát từ GradeService để module sau subscribe).
 
 	log.Info("api starting", "port", cfg.HTTPPort, "env", cfg.AppEnv)
 	if err := http.ListenAndServe(":"+cfg.HTTPPort, r); err != nil {
