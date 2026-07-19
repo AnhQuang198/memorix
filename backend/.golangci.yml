@@ -19,3 +19,5 @@ linters:
               desc: "domain không import hạ tầng DB (AD-2)"
             - pkg: "net/http"
               desc: "domain không biết HTTP (AD-2)"
+            - pkg: "github.com/open-spaced-repetition/go-fsrs/v3"
+              desc: "chỉ scheduling/repo/fsrsadapter được bọc go-fsrs (AD-7)"

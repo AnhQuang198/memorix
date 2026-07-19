@@ -47,6 +47,9 @@ type Card struct {
 	Difficulty float64
 	Reps       int
 	Lapses     int
-	CreatedAt  time.Time
-	UpdatedAt  time.Time
+	// LastReviewAt là thời điểm ôn gần nhất; nil khi card còn New. FSRS adapter
+	// dùng để tính elapsed-days cho forgetting curve.
+	LastReviewAt *time.Time
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
