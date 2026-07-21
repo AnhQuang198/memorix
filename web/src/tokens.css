@@ -11,3 +11,6 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}
+.skeleton{background:linear-gradient(90deg,var(--line),var(--surface),var(--line));background-size:200% 100%;border-radius:var(--radius);animation:sk 1.2s ease-in-out infinite}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
