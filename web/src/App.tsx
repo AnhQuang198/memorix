@@ -1,5 +1,8 @@
 import { useState } from "react";
 import "./tokens.css";
+import OfflineBanner from "./components/OfflineBanner";
+import Dashboard from "./screens/Dashboard";
+import Stats from "./screens/Stats";
 
 const TABS = ["Trang chủ", "Ôn", "Thư viện", "Thống kê"];
 
@@ -17,9 +20,16 @@ export default function App() {
         <strong style={{ color: "var(--accent)" }}>MEMORIX</strong>
         <button aria-label="Đổi giao diện" onClick={toggle}>◑</button>
       </header>
-      <main style={{ flex: 1, padding: 16 }}>
-        <h1>{TABS[tab]}</h1>
-        <p style={{ color: "var(--muted)" }}>Màn placeholder — story sau triển khai.</p>
+      <OfflineBanner />
+      <main style={{ flex: 1 }}>
+        {tab === 0 && <Dashboard />}
+        {tab === 3 && <Stats />}
+        {(tab === 1 || tab === 2) && (
+          <div style={{ padding: 16 }}>
+            <h1>{TABS[tab]}</h1>
+            <p style={{ color: "var(--muted)" }}>Màn do sprint khác triển khai.</p>
+          </div>
+        )}
       </main>
       <nav
         role="navigation"
