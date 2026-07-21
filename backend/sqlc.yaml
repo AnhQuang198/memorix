@@ -8,4 +8,17 @@ sql:
         package: gen
         out: internal/identity/repo/gen
         sql_package: pgx/v5
-# Thêm block tương tự cho vocabulary/scheduling/review/progress khi story cần query.
+  - engine: postgresql
+    schema: migrations
+    queries: db/queries/progress
+    gen:
+      go:
+        package: gen
+        out: internal/progress/repo/gen
+        sql_package: pgx/v5
+        overrides:
+          - db_type: "uuid"
+            go_type: "string"
+          - db_type: "timestamptz"
+            go_type: "time.Time"
+# Thêm block tương tự cho vocabulary/scheduling/review khi story cần query.
