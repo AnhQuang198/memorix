@@ -12,3 +12,15 @@ func StudyDayStart(now time.Time, loc *time.Location, graceHour int) time.Time {
 	}
 	return time.Date(d.Year(), d.Month(), d.Day(), graceHour, 0, 0, 0, loc)
 }
+
+// StartOfStudyDay trả mốc 00:00 "ngày học" theo TZ người dùng (AD-12), an toàn DST.
+// Nhận tên IANA TZ và trả lỗi nếu TZ không hợp lệ; downstream (BuildQueue,
+// PlanAntiFlood, QueueService) dùng chữ ký này. Không grace ⇒ tái dùng
+// StudyDayStart với graceHour=0 để tránh lặp logic cắt ngày.
+func StartOfStudyDay(now time.Time, tz string) (time.Time, error) {
+	loc, err := time.LoadLocation(tz)
+	if err != nil {
+		return time.Time{}, err
+	}
+	return StudyDayStart(now, loc, 0), nil
+}
