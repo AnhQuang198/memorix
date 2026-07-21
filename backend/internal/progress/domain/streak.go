@@ -1,21 +1,5 @@
 package domain
 
-// DailyStat = một hàng progress.daily_stats.
-//
-// TẠM ĐỊNH NGHĨA Ở ĐÂY cho Task 3 (streak fold cần nó). Home vĩnh viễn của
-// DailyStat là `rebuild.go` (Task 4) — khi Task 4 land, XOÁ block này để tránh
-// khai báo trùng và giữ định nghĩa duy nhất trong rebuild.go.
-type DailyStat struct {
-	Day         Day
-	ReviewsDone int
-	NewDone     int
-	Retained    int
-	Again       int
-	Hard        int
-	Good        int
-	Easy        int
-}
-
 // StudyProfile — trạng thái động lực tích lũy của một user.
 type StudyProfile struct {
 	StreakCurrent int
