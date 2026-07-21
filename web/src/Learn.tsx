@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-type Card = { id: string; entry_id: string; state: number; due_at: string };
+type Card = { id: string; entry_id: string; status: string; due_at: string };
 type Session = { cards: Card[]; show_coach: boolean };
 
 const GRADES = [
