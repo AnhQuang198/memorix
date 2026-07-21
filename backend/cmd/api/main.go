@@ -21,6 +21,9 @@ import (
 	"github.com/memorix/memorix/internal/platform/logger"
 	"github.com/memorix/memorix/internal/platform/ratelimit"
 	"github.com/memorix/memorix/internal/platform/security"
+	progresshandler "github.com/memorix/memorix/internal/progress/handler"
+	progressrepo "github.com/memorix/memorix/internal/progress/repo"
+	progresssvc "github.com/memorix/memorix/internal/progress/service"
 	revhandler "github.com/memorix/memorix/internal/review/handler"
 	revports "github.com/memorix/memorix/internal/review/ports"
 	revrepo "github.com/memorix/memorix/internal/review/repo"
@@ -163,6 +166,18 @@ func main() {
 	schedQueueSvc := schedsvc.NewQueueService(queueRepo, queueRepo, activity)
 	learnSvc := schedsvc.NewLearnService(queueRepo, queueRepo, activity, queueRepo)
 	schedhandler.RegisterQueueRoutes(secured, schedQueueSvc, learnSvc, queueRepo)
+
+	// --- Sprint 5: progress (read model) ---
+	// Ingestor subscribe CardGraded → cập nhật daily_stats fire-and-forget, ngoài TX
+	// grade (AD-8). Reader phục vụ dashboard/stats trên `secured` (RequireAuth).
+	// TZResolver: MVP dùng UTCResolver (TZ per-user deferred); prod wire adapter bọc
+	// identity.IdentityPort.UserTimezone (AD-9). KHÔNG đọc TZ từ gin context.
+	progressRepo := progressrepo.New(pool)
+	ingestor := progresssvc.NewIngestor(progressRepo, progresssvc.UTCResolver{}, log)
+	ingestor.Subscribe(bus)
+
+	reader := progresssvc.NewReader(progressRepo)
+	progresshandler.New(reader, progresssvc.UTCResolver{}).Register(secured)
 
 	log.Info("api starting", "port", cfg.HTTPPort, "env", cfg.AppEnv)
 	if err := http.ListenAndServe(":"+cfg.HTTPPort, r); err != nil {

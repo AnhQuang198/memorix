@@ -11,7 +11,9 @@ import (
 	"github.com/memorix/memorix/internal/platform/eventbus"
 	revdom "github.com/memorix/memorix/internal/review/domain"
 	revports "github.com/memorix/memorix/internal/review/ports"
+	scheddom "github.com/memorix/memorix/internal/scheduling/domain"
 	schedports "github.com/memorix/memorix/internal/scheduling/ports"
+	"github.com/memorix/memorix/internal/shared/events"
 )
 
 var ErrInvalidGrade = errors.New("grade must be 1..4")
@@ -40,12 +42,14 @@ func NewGradeService(d GradeDeps) *GradeService {
 	return &GradeService{d: d}
 }
 
-// CardGradedPayload đi kèm event CardGraded (progress read model đọc — AD-8).
-type CardGradedPayload struct {
-	CardID     uuid.UUID
-	OwnerID    uuid.UUID
-	Grade      int
-	ReviewedAt time.Time
+// scheduledDaysOf suy "interval kế" (số ngày) từ lịch mới — khớp cách reconcile của
+// progress tính (new_due_at::date - reviewed_at::date), so ở UTC để nhất quán N-day.
+func scheduledDaysOf(reviewedAt, dueAt time.Time) int {
+	r := reviewedAt.UTC()
+	d := dueAt.UTC()
+	rDay := time.Date(r.Year(), r.Month(), r.Day(), 0, 0, 0, 0, time.UTC)
+	dDay := time.Date(d.Year(), d.Month(), d.Day(), 0, 0, 0, 0, time.UTC)
+	return int(dDay.Sub(rDay).Hours() / 24)
 }
 
 // Grade: server-authoritative (AD-5), nguyên tử (AD-3), idempotent (FR-15), append-only (AD-4).
@@ -55,8 +59,10 @@ func (s *GradeService) Grade(ctx context.Context, ownerID uuid.UUID, cmd revdom.
 	}
 	now := s.d.Clock()
 	var (
-		result revdom.GradeResult
-		fresh  bool
+		result        revdom.GradeResult
+		fresh         bool
+		wasNew        bool
+		scheduledDays int
 	)
 
 	err := s.d.Tx(ctx, func(q db.Querier) error {
@@ -80,6 +86,10 @@ func (s *GradeService) Grade(ctx context.Context, ownerID uuid.UUID, cmd revdom.
 		out := s.d.Scheduler.Apply(card, cmd.Grade, prefs.DesiredRetention, now)
 		res := revdom.ResultFromSchedule(cmd.CardID, out)
 		logID := uuid.New()
+		// snapshot cho event CardGraded (phát ngoài TX): trạng thái New TRƯỚC khi chấm
+		// + interval kế suy từ lịch mới.
+		wasNew = card.Status == scheddom.StatusNew
+		scheduledDays = scheduledDaysOf(now, out.DueAt)
 
 		// 4. guard idempotency TRƯỚC khi append (chống race đa thiết bị).
 		inserted, err := s.d.Receipts.Insert(ctx, q, res, logID, cmd.ClientReviewID)
@@ -116,10 +126,16 @@ func (s *GradeService) Grade(ctx context.Context, ownerID uuid.UUID, cmd revdom.
 		return revdom.GradeResult{}, err
 	}
 
-	// 6. phát event NGOÀI TX chấm (AD-8), chỉ khi chấm mới.
+	// 6. phát event NGOÀI TX chấm (AD-8), chỉ khi chấm mới. Dùng hợp đồng chung
+	// shared/events.CardGraded để progress subscribe (OwnerID/CardID dạng string).
 	if fresh && s.d.Bus != nil {
-		s.d.Bus.Publish(ctx, eventbus.Event{Name: "CardGraded", Payload: CardGradedPayload{
-			CardID: cmd.CardID, OwnerID: ownerID, Grade: int(cmd.Grade), ReviewedAt: now,
+		s.d.Bus.Publish(ctx, eventbus.Event{Name: events.CardGradedName, Payload: events.CardGraded{
+			OwnerID:       ownerID.String(),
+			CardID:        cmd.CardID.String(),
+			Grade:         int(cmd.Grade),
+			ScheduledDays: scheduledDays,
+			WasNew:        wasNew,
+			ReviewedAt:    now,
 		}})
 	}
 	return result, nil

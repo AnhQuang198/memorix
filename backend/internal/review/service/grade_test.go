@@ -12,6 +12,7 @@ import (
 	revdom "github.com/memorix/memorix/internal/review/domain"
 	"github.com/memorix/memorix/internal/review/service"
 	scheddom "github.com/memorix/memorix/internal/scheduling/domain"
+	"github.com/memorix/memorix/internal/shared/events"
 	"github.com/stretchr/testify/require"
 )
 
@@ -107,25 +108,39 @@ func newSvc(bus *eventbus.InProcess) (*service.GradeService, *fakeCards, *fakeLo
 func TestGrade_ServerComputesAndPersistsOnce(t *testing.T) {
 	bus := eventbus.NewInProcess()
 	var mu sync.Mutex
-	events := 0
-	bus.Subscribe("CardGraded", func(context.Context, eventbus.Event) { mu.Lock(); events++; mu.Unlock() })
+	count := 0
+	var got events.CardGraded
+	bus.Subscribe(events.CardGradedName, func(_ context.Context, ev eventbus.Event) {
+		mu.Lock()
+		defer mu.Unlock()
+		count++
+		got = ev.Payload.(events.CardGraded) // hợp đồng chung, không phải kiểu review-local
+	})
 
 	svc, cards, logs := newSvc(bus)
+	owner := uuid.New()
 	cmd := revdom.GradeCommand{CardID: uuid.New(), Grade: scheddom.GradeGood, ClientReviewID: "cr-1"}
-	res, err := svc.Grade(context.Background(), uuid.New(), cmd)
+	res, err := svc.Grade(context.Background(), owner, cmd)
 	require.NoError(t, err)
 	require.InDelta(t, 5, res.Stability, 1e-9) // server tính, không nhận từ client
 	require.Equal(t, 1, cards.applied)
 	require.Len(t, logs.rows, 1)
 	bus.Wait()
-	require.Equal(t, 1, events)
+	require.Equal(t, 1, count)
+	// payload = shared/events.CardGraded, đủ field để progress ingest (AD-8).
+	require.Equal(t, owner.String(), got.OwnerID)
+	require.Equal(t, cmd.CardID.String(), got.CardID)
+	require.Equal(t, int(scheddom.GradeGood), got.Grade)
+	require.Equal(t, 5, got.ScheduledDays) // fakeSched: due = now + 5 ngày
+	require.True(t, got.WasNew)            // card load Status=StatusNew trước khi chấm
+	require.Equal(t, time.Date(2026, 7, 18, 8, 0, 0, 0, time.UTC), got.ReviewedAt)
 }
 
 func TestGrade_IdempotentOnDuplicateClientReviewID(t *testing.T) {
 	bus := eventbus.NewInProcess()
 	var mu sync.Mutex
-	events := 0
-	bus.Subscribe("CardGraded", func(context.Context, eventbus.Event) { mu.Lock(); events++; mu.Unlock() })
+	count := 0
+	bus.Subscribe(events.CardGradedName, func(context.Context, eventbus.Event) { mu.Lock(); count++; mu.Unlock() })
 
 	svc, cards, logs := newSvc(bus)
 	owner := uuid.New()
@@ -140,7 +155,7 @@ func TestGrade_IdempotentOnDuplicateClientReviewID(t *testing.T) {
 	require.Equal(t, 1, cards.applied, "KHÔNG chấm lại card")
 	require.Len(t, logs.rows, 1, "KHÔNG tạo log trùng (AD-4)")
 	bus.Wait()
-	require.Equal(t, 1, events, "KHÔNG phát event lần hai")
+	require.Equal(t, 1, count, "KHÔNG phát event lần hai")
 }
 
 func TestGrade_RejectsInvalidGrade(t *testing.T) {
