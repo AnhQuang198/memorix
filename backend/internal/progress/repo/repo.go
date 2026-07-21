@@ -24,8 +24,12 @@ type Repo struct {
 // New tạo Repo trên một pgxpool.Pool.
 func New(pool *pgxpool.Pool) *Repo { return &Repo{q: gen.New(pool)} }
 
-// Repo thỏa port write side service.IngestRepo (kiểm tra tại compile-time).
-var _ service.IngestRepo = (*Repo)(nil)
+// Repo thỏa port write side service.IngestRepo + rebuild side service.ReconcileRepo
+// (kiểm tra tại compile-time).
+var (
+	_ service.IngestRepo    = (*Repo)(nil)
+	_ service.ReconcileRepo = (*Repo)(nil)
+)
 
 func toPgDate(d domain.Day) pgtype.Date { return pgtype.Date{Time: d.At(), Valid: true} }
 

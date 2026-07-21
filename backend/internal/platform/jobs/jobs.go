@@ -22,12 +22,16 @@ func Migrate(ctx context.Context, pool *pgxpool.Pool) error {
 	return err
 }
 
-// NewClient tạo River client (insert-only ở API; worker truyền Workers riêng).
-func NewClient(pool *pgxpool.Pool, workers *river.Workers) (*river.Client[pgx.Tx], error) {
+// NewClient tạo River client (insert-only ở API; worker truyền Workers + periodic jobs
+// riêng). periodicJobs tùy chọn: worker đăng ký reconcile định kỳ (Task 9), API bỏ trống.
+func NewClient(pool *pgxpool.Pool, workers *river.Workers, periodicJobs ...*river.PeriodicJob) (*river.Client[pgx.Tx], error) {
 	cfg := &river.Config{}
 	if workers != nil {
 		cfg.Queues = map[string]river.QueueConfig{river.QueueDefault: {MaxWorkers: 10}}
 		cfg.Workers = workers
+	}
+	if len(periodicJobs) > 0 {
+		cfg.PeriodicJobs = periodicJobs
 	}
 	return river.NewClient(riverpgxv5.New(pool), cfg)
 }

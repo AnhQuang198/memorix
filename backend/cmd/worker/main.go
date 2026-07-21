@@ -12,6 +12,9 @@ import (
 	"github.com/memorix/memorix/internal/platform/config"
 	"github.com/memorix/memorix/internal/platform/jobs"
 	"github.com/memorix/memorix/internal/platform/logger"
+	prepo "github.com/memorix/memorix/internal/progress/repo"
+	psvc "github.com/memorix/memorix/internal/progress/service"
+	pworker "github.com/memorix/memorix/internal/progress/worker"
 	schedrepo "github.com/memorix/memorix/internal/scheduling/repo"
 	schedsvc "github.com/memorix/memorix/internal/scheduling/service"
 	vocabjobs "github.com/memorix/memorix/internal/vocabulary/jobs"
@@ -42,11 +45,15 @@ func main() {
 	}
 	vRepo := vocabrepo.New(pool)
 	schedService := schedsvc.New(schedrepo.New(pool))
+	// Progress reconcile (Task 9): rebuild daily_stats từ review_logs (AD-4). TZ per-user
+	// deferred (IdentityPort) → UTC mặc định như ingest background.
+	reconciler := psvc.NewReconciler(prepo.New(pool), psvc.UTCResolver{})
 
 	workers := river.NewWorkers()
 	river.AddWorker(workers, &vocabjobs.EnrollWorker{Store: vRepo, Cards: schedService})
+	river.AddWorker(workers, &pworker.ReconcileWorker{Reconciler: reconciler})
 
-	client, err := jobs.NewClient(pool, workers)
+	client, err := jobs.NewClient(pool, workers, pworker.PeriodicSpec())
 	if err != nil {
 		log.Error("river client failed", "err", err)
 		os.Exit(1)
@@ -55,7 +62,7 @@ func main() {
 		log.Error("river worker start failed", "err", err)
 		os.Exit(1)
 	}
-	log.Info("river worker started: enroll_deck registered")
+	log.Info("river worker started: enroll_deck + progress_reconcile(hourly) registered")
 
 	// --- Identity GDPR purge (Sprint 1): ticker giữ tiến trình sống ---
 	repos := repo.New(pool)
