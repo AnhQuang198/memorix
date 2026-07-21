@@ -154,6 +154,16 @@ func main() {
 	// CardGraded subscriber: progress read model chưa có ở Sprint 3 backend → hoãn
 	// (event vẫn phát từ GradeService để module sau subscribe).
 
+	// --- Sprint 4: smart-queue + learn (assembly glue) ---
+	// QueueRepo thỏa CardRepo+PrefsRepo+StudyProfileRepo; ActivityAdapter đọc review_logs
+	// (ReviewActivityPort). Handler đọc principal nội bộ qua authmw.UserID; guard bằng
+	// `secured` (RequireAuth) như các module trước.
+	queueRepo := schedrepo.NewQueueRepo(pool)
+	activity := revsvc.NewActivityAdapter(pool)
+	schedQueueSvc := schedsvc.NewQueueService(queueRepo, queueRepo, activity)
+	learnSvc := schedsvc.NewLearnService(queueRepo, queueRepo, activity, queueRepo)
+	schedhandler.RegisterQueueRoutes(secured, schedQueueSvc, learnSvc, queueRepo)
+
 	log.Info("api starting", "port", cfg.HTTPPort, "env", cfg.AppEnv)
 	if err := http.ListenAndServe(":"+cfg.HTTPPort, r); err != nil {
 		log.Error("server stopped", "err", err)
